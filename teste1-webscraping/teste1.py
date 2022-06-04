@@ -8,40 +8,35 @@ response = requests.get(url)
 content = BeautifulSoup(response.text, 'html.parser')
 all_urls = content.find_all('a')
 
-def download():
+# Encontra os arquivos requisitados e realiza o download diretamente para a pasta "anexos"
+def download(): 
     for url in all_urls:
         try:
             if 'Anexo' in url['href']:
-            #print(url['href'])
+                #print(url['href'])
                 file_url = url['href']
 
                 file_name = file_url.split('/')[-1]
-
-            #print(file_name)
-            
+                #print(file_name)
+                #             
                 file_response = requests.get(file_url)
 
-                with open ('./teste1-webscraping/anexos/' + file_name, 'wb') as f:
+                with open ('teste1-webscraping/anexos/' + file_name, 'wb') as f:
 
                     f.write(file_response.content)
-
 
         except Exception as e:
             print(e)
 
-download()
-
-#shutil.make_archive('anexos-zip', 'zip', './zipados/')
-#shutil.move('./anexos-zip.zip', './teste1-webscraping')
-
+# Pega todo o conteúdo que está na pasta "anexos" e coloca em um .zip
 def zip_directory(folder_path, zip_path):
     with zipfile.ZipFile(zip_path, mode='w') as zipf:
         len_dir_path = len(folder_path)
         for root, _, files in os.walk(folder_path):
             for file in files:
                 file_path = os.path.join(root, file)
-                zipf.write(file_path, file_path[len_dir_path:])
-                
-zip_directory('./teste1-webscraping/anexos/', './teste1-webscraping/anexos-zip.zip')
+                zipf.write(file_path, file_path[len_dir_path:])                
 
-print('its working!')
+
+download()
+zip_directory('teste1-webscraping/anexos/', 'teste1-webscraping/anexos-zip.zip')

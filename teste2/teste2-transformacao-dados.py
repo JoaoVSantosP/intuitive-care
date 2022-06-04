@@ -1,10 +1,8 @@
 import tabula
 from zipfile import ZipFile
 
-pages = '3-200'
-pdf_path = 'https://www.gov.br/ans/pt-br/arquivos/assuntos/consumidor/o-que-seu-plano-deve-cobrir/Anexo_I_Rol_2021RN_465.2021_RN473_RN478_RN480_RN513_RN536.pdf'
-
-def extractPDF(pdf_path, pages):    
+# baixar o csv e sem seguida, zipar
+def extractPDF(pdf_path, pages): 
     dfs = tabula.read_pdf(pdf_path, pages=pages)
     i = 0
     for df in dfs:       
@@ -29,5 +27,9 @@ def extractPDF(pdf_path, pages):
 def zipCsv():
     with ZipFile('teste2/Teste_{Joao_Victor}.zip', 'w') as zipObj: #Cria um arquivo .zip
         zipObj.write('teste2/' + 'Rol de Procedimentos e Eventos em Saúde' + '.csv')
+
+
+pages = '3-200'
+pdf_path = 'https://www.gov.br/ans/pt-br/arquivos/assuntos/consumidor/o-que-seu-plano-deve-cobrir/Anexo_I_Rol_2021RN_465.2021_RN473_RN478_RN480_RN513_RN536.pdf'
 
 extractPDF(pdf_path, pages)
